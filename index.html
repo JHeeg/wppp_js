@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="DinoWorks Inc. 디노웍스(주)" />
+        <meta name="apple-mobile-web-app-title" content="디노웍스UI" />
+        <title>디노웍스(주) UI 라이브러리</title>
+        <meta name="description" content="디노웍스(주) UI 라이브러리" />
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="fa/css/all.min.css" rel="stylesheet" />
+        <link href="css/style.css" rel="stylesheet" media="screen and (min-width : 851px)" />
+        <link href="css/style_mobile.css" rel="stylesheet" media="screen and (max-width : 850px)" />
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/ui_common.js"></script>
+    </head>
+    <body class="main">
+        <div id="wrapper">
+            <a href="#main" id="skip-nav">본문 바로가기</a>
+            <header id="header">
+                <h1><a href="index.html"><img alt="DinoWorks(디노웍스)" src="img/logo.png" /></a></h1>
+            </header>
+            <main id="main">
+                <section id="main-visual">
+                    <ul class="slide">
+                        <li><img alt="" src="img/main_visual_01.jpg" /></li>
+                        <li><img alt="" src="img/main_visual_02.jpg" /></li>
+                        <li><img alt="" src="img/main_visual_03.jpg" /></li>
+                        <li><img alt="" src="img/main_visual_04.jpg" /></li>
+                    </ul>
+                </section>
+                <section id="main-link">
+                    <ul>
+                        <li><a href="page/image_slide_step1.html">이미지 슬라이드(Step1)</a></li>
+                        <li><a href="page/image_slide_step2.html">이미지 슬라이드(Step2)</a></li>
+                        <li><a href="page/image_slide_step3.html">이미지 슬라이드(Step3)</a></li>
+                        <li><a href="page/image_slide_step4.html">이미지 슬라이드(Step4)</a></li>
+                        <li><a href="page/image_slide_step5.html">이미지 슬라이드(Step5)</a></li>
+                        <li><a href="page/image_slide_step6.html">이미지 슬라이드(Step6)</a></li>
+                        <li><a href="page/image_slide_step7.html">이미지 슬라이드(Step7)</a></li>
+                        <li><a href="page/image_slide_css3.html">이미지 슬라이드(CSS3 효과)</a></li>
+                        <li><a href="page/banner_slide_step1.html">배너 슬라이드(Step1)</a></li>
+                        <li><a href="page/banner_slide_step2.html">배너 슬라이드(Step2)</a></li>
+                        <li><a href="page/banner_slide_step3.html">배너 슬라이드(Step3)</a></li>
+                        <li><a href="page/banner_slide_infinite.html">배너 슬라이드(무한)</a></li>
+                        <li><a href="page/drag_basic.html">드래그 기초</a></li>
+                        <li><a href="page/image_slide_drag.html">이미지 슬라이드(드래그)</a></li>
+                        <li><a href="page/image_slide_infinite.html">이미지 슬라이드(무한)</a></li>
+                        <li><a href="page/scroll_basic.html">스크롤 UI 기초</a></li>
+                        <li><a href="page/scroll_parallax_bar.html">패럴랙스(scroll)</a></li>
+                        <li><a href="page/scroll_parallax_nobar.html">패럴랙스(wheel)</a></li>
+                        <li><a href="page/scroll_parallax_animation.html">패럴랙스(animation)</a></li>
+                        <li><a href="page/digit_rolling.html">숫자롤링</a></li>
+                        <li><a href="page/digit_counting.html">숫자 카운팅</a></li>
+                        <li><a href="page/check_star_full.html">별점체크(1점 단위)</a></li>
+                        <li><a href="page/check_star_half.html">별점체크(0.5점 단위)</a></li>
+                        <li><a href="page/fake_form.html">Fake Form</a></li>
+                        <li><a href="page/text_animation.html">Text Animation</a></li>
+                        <li><a href="page/layer_popup_step1.html">레이어 팝업창(Step1)</a></li>
+                        <li><a href="page/layer_popup_step2.html">레이어 팝업창(Step2)</a></li>
+                        <li><a href="page/css3_test.html">CSS3 Test</a></li>
+                    </ul>
+                </section>
+            </main>
+            <footer id="footer">
+                <p class="copyright">2019 DinoWorks Inc.</p>
+            </footer>
+        </div> <!-- #wrapper  -->
+        
+<script>
+'use strict';
+
+
+$.fn.setVisualEffect = function(options) {
+    var settings = $.extend({
+        firstSlide: 1,
+        timerStatus: true,
+        timerSpeed: 8000
+    }, options);
+    
+    this.each(function() {
+        var $selector = $(this);
+        var numSlide = $selector.find('ul.slide li').length;
+        var slideNow = 0;
+        var slideNext = 0;
+        var slidePrev = 0;
+        var firstSlide = settings.firstSlide;
+        var timerId = '';
+        var timerStatus = settings.timerStatus;
+        var timerSpeed = settings.timerSpeed;
+        
+        showSlide(firstSlide);
+        
+        function showSlide(n) {
+            clearTimeout(timerId);
+            if (slideNow === n) return false;
+            if (slideNow === 0) {
+                $selector.find('ul.slide li').css({'display': 'none'});
+                $selector.find('ul.slide li:eq(' + (n - 1) + ')').css({'display': 'block'});
+            } else {
+                $selector.find('ul.slide li:eq(' + (slideNow - 1) + ')').css({'z-index': 0}).removeClass('show').addClass('hide').one('animationend', function() {
+                    $(this).css({'display': 'none'});
+                });
+                $selector.find('ul.slide li:eq(' + (n - 1) + ')').css({'display': 'block', 'z-index': 10}).removeClass('hide').addClass('show');
+            }
+            $selector.find('ul.indicator li').removeClass('on');
+            $selector.find('ul.indicator li:eq(' + (n - 1) + ')').addClass('on');
+            slideNow = n;
+            slideNext = (n + 1) > numSlide ? 1 : n + 1;
+            slidePrev = (n - 1) < 1 ? numSlide : n - 1;
+            if (timerStatus === true) {
+                timerId = setTimeout(function() {showSlide(slideNext);}, timerSpeed);
+            }
+        }
+    });
+}
+$('#main-visual').setVisualEffect();
+
+</script>
+    </body>
+</html>
+
+
